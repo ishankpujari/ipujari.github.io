@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #13294B;
+            color: #FFFFFF;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: cursive;
+            text-align: center;
+        }
+
+        .light-mode {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+
+        .menu {
+            width: 240px;
+            background-color: #1B3A57;
+            padding: 10px 10px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: left 0.3s ease-in-out;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+            z-index: 5;
+        }
+
+        .menu.light-mode {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+
+        .menu a {
+            color: inherit;
+            text-decoration: none;
+            margin: 10px 0;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .menu.visible {
+            left: 0;
+        }
+
+        .menu.hidden {
+            left: -240px;
+        }
+
+        .content {
+            padding: 20px;
+            font-size: 24px;
+            text-align: center;
+            height: calc(100vh - 40px);
+            margin-left: 260px;
+        }
+
+        .menu-text {
+            margin-top: auto;
+        }
+
+        .toggle-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 6;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        #home {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .logos-container {
+            display: flex;
+            justify-content: center;
+            gap: 90px;
+            margin-top: 20px;
+        }
+        .logos-container a:nth-child(2) .logo {
+            width: 120px;
+            margin-top: 30px;
+        }
+
+        .logos-container a:nth-child(3) .logo {
+            width: 80px; 
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+        }
+
+        .light-mode .logo {
+            filter: invert(1);
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            left: 5%;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            object-fit: cover;
+            object-position: center;
+            border: 7px solid #FFFFFF;
+            transition: border-color 0.3s;
+            margin-left: auto;
+            margin-right: 50px;
+        }
+
+        .light-mode .profile-picture {
+            border-color: #000000;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 7;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 30px;
+        }
+
+        .hamburger div {
+            width: 100%;
+            height: 3px;
+            background-color: #FFFFFF;
+            transition: background-color 0.3s;
+        }
+
+        .light-mode .hamburger div {
+            background-color: #000000;
+        }
+
+        @media screen and (max-width: 768px) {
+            .menu {
+                left: -240px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .menu a {
+                font-size: 18px;
+                margin: 8px 0;
+            }
+
+            .profile-picture {
+                width: 100px;
+                height: 100px;
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+            .content {
+                font-size: 20px;
+                padding: 20px;
+                margin-left: 0;
+            }
+
+            .logos-container {
+                gap: 50px;
+            }
+
+            .logo {
+                width: 50px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .content {
+                font-size: 18px;
+                padding: 15px;
+            }
+
+            .menu a {
+                font-size: 16px;
+                margin: 6px 0;
+            }
+
+            .profile-picture {
+                width: 80px;
+                height: 80px;
+            }
+
+            .logos-container {
+                gap: 30px;
+            }
+
+            .logo {
+                width: 40px;
+            }
+        }
+
+        .contact-card {
+            background-color: #1B3A57;
+            color: #FFFFFF;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            display: inline-block;
+            width: 300px;
+        }
+
+        .contact-card h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .contact-cards {
+            background-color: #1B3A57;
+            color: #FFFFFF;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50%; /* Adjust as needed */
+            max-width: 300px; /* Set a maximum width */
+            box-sizing: border-box; /* Ensures padding and border are included in the width */
+        }
+
+        .contact-cards img {
+            width: 100%;
+            max-width: 400px; /* Adjust to ensure the image fits well within the card */
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .contact-cards-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Two columns */
+            grid-template-rows: repeat(2, auto); /* Two rows */
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-left: 0px; /* Adjust the margin as needed */
+        }
+
+
+        .contact-title-wrapper {
+            position: relative;
+            color:#FFFFFF; 
+        }
+
+        .contact-title-bg {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 96px;
+            white-space: nowrap; 
+            color: rgba(242, 223, 223, 0.1);
+            z-index: 0;
+        }
+        .title-up {
+            margin-top: -20px; /* Adjust this value as needed to move the title up */
+        }
+
+        .light-mode .contact-title-bg {
+            color: rgba(0, 0, 0, 0.1);
+        }
+
+        .light-mode .contact-card {
+            background-color: #FFFFFF;
+            color: #000000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .contact-cards {
+            background-color: #FFFFFF;
+            color: #000000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .gif {
+            width: 230px;
+            height: 200px;
+            margin-right: 20%;
+            margin-left: auto;
+            transition: filter 0.3s;
+            filter: brightness(0) invert(1); 
+        }
+
+        .light-mode .gif {
+            filter: brightness(0) invert(0);
+        }
+        body {
+            font-family: cursive;
+            text-align: center;
+            position: relative;
+            background-color: #13294B; 
+            color: #FFFFFF;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .light-mode {
+            background-color: #FFFFFF;
+            color: #000000; 
+        }
+
+        .content {
+            position: relative;
+            padding: 20px;
+            font-size: 24px;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.1; 
+            z-index: 0; 
+            transition: opacity 0.3s ease-in-out;
+            filter: brightness(0) invert(1);
+        }
+
+        .light-mode .background-image {
+            filter: brightness(0) invert(0);
+        }
+
+        .logos-container {
+            display: flex;
+            justify-content: center;
+            gap: 90px;
+            margin-top: 20px;
+            z-index: 2; 
+        }
+
+        @media screen and (max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+
+            .logos-container {
+                gap: 50px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .content {
+                font-size: 18px;
+                padding: 15px;
+            }
+
+            .logos-container {
+                gap: 30px;
+            }
+        }
+        .contact-cards-container {
+    display: flex;
+    justify-content: center; /* Center the items horizontally */
+    gap: 20px; /* Adjust as needed for spacing between cards */
+}
+
+.contact-cards {
+    text-align: center; /* Center the content inside each card */
+}
+
+        
+
+    </style>
+</head>
+<body>
+    <div class="hamburger" id="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="menu visible" id="menu">
+        <img class="profile-picture" src="https://www.cs124.org/_next/image?url=https%3A%2F%2Fs.gravatar.com%2Favatar%2Fbf5ae521101bccfeb14bbc2f6524e278%3Fs%3D460%26r%3Dpg%26d%3Dhttps%253A%252F%252Fwww.cs124.org%252Fimages%252Flogo-460x460.png&w=3840&q=75">
+        <a href="#home">Home</a>
+        <a href="#about">About Me</a>
+        <a href="/Users/ishankpujari/Documents/UIUC/Ishank%20Pujari%20Resume%28%29.pdf" target="_blank">Resume</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <img class="gif" src="/Users/ishankpujari/Downloads/GIFS.gif">
+
+    </div>
+    <div class="toggle-switch">
+        <label class="switch">
+            <input type="checkbox" id="modeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div id="home" class="content">
+        <img class="background-image" src="/Users/ishankpujari/Downloads/Logo.png" alt="Background Image">
+        <h1>Hey, I am Ishank Pujari</h1>
+        <p>A dedicated student aspiring to be a software engineer, AI Video and Image generation researcher. Welcome to my personal website!</p>
+        <div class="logos-container">
+            <a href="https://github.com/ishankpujari?tab=repositories"><img class="logo" src="https://camo.githubusercontent.com/f9f1978bdbc2c69cceae7c46d8d2e891df66b6293dfa28b84d0e34f5cde7c8b9/68747470733a2f2f7777772e73666572616c6162732e63632f77702d636f6e74656e742f75706c6f6164732f6769746875622d6c6f676f2d77686974652e706e67"></a>
+            <a href="https://www.linkedin.com/in/ishank-pujari-454aab218/"><img class="logo" src="https://freelogopng.com/images/all_img/1656997167linkedin-logo-white.png"></a>
+            <a href="mailto:pujari.ishank@gmail.com"><img class="logo" src="https://mailmeteor.com/logos/assets/PNG/Gmail_Logo_White_512px.png"></a>    
+        </div>
+    </div>
+    
+        <div id="about" class="content" style="margin-top: 40vh;">
+            <div class="contact-title-wrapper">
+                <h1>About Me</h1>
+                <h1 class="contact-title-bg">About Me</h1> 
+            </div>
+            <p> I'm currently a Bachelor of Science student majoring in Computer Science at the University of Illinois at Urbana-Champaign.
+                I am a software developer and a researcher in the field of AI Video and Image generation. I am passionate about learning new techonologies and building innovative solutions. 
+                With strong communication skills and the desire and ability to collaborate and contribute while engaging in a process of continuous learning, I hope to pursue the areas of Software Engineering, Product Management, Natural Language Processing, and advancing AI to drive social impact at the intersection of technology and the public sector.
+            </p>
+        </div>
+        <div id="projects" class="content">
+            <div class="contact-title-wrapper">
+                <h1 class="title-up">Projects</h1>
+                <h1 class="contact-title-bg title-up">Projects</h1> 
+            </div>
+            <div class="contact-cards-container">
+                <div class="contact-cards">
+                    <a href="https://www.youtube.com/watch?v=R7zsYz8GRvk&t=2s&ab_channel=IshankPujari"><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/012877a5-f2bc-4780-9649-25d5eea7f4db/d5w5jk1-b2189db3-9604-4508-a2b5-df51b69ebd14.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzAxMjg3N2E1LWYyYmMtNDc4MC05NjQ5LTI1ZDVlZWE3ZjRkYlwvZDV3NWprMS1iMjE4OWRiMy05NjA0LTQ1MDgtYTJiNS1kZjUxYjY5ZWJkMTQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.872Rmm1I96-QSIkj0VrXfbBO-4mZcJ16CyyrzTtthak"></a>
+                    <p>Developed a project called Pi-Temp, a self-built dehumidifier project for my basement using Raspberry-Pi from my course Harvard CS50x through edX</p>
+
+                </div>    
+                <div class="contact-cards">
+                    <a href="https://ipujari.pythonanywhere.com/"><img src=https://miro.medium.com/v2/resize:fit:640/1*dKU4uBSnJCs4jzkkuiALoQ.png></a>
+                    <p>Explore my Currency Converter app, built using Python and Flask, offering seamless currency conversions with real-time rates and a user-friendly interface.</p>
+                </div>
+                <div class="contact-cards center">
+                    <a href="https://pishank.pythonanywhere.com/"><img src="https://bloximages.newyork1.vip.townnews.com/local3news.com/content/tncms/assets/v3/editorial/c/f6/cf64b7e0-764b-11ed-9b8b-efbcc70b447a/6390bea441b75.image.jpg?resize=1396%2C785"></a>
+                    <p>Discover my Python and Flask-built Wordle game, where you try to solve a hidden five-letter word with color-coded hints on each guess.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="contact" class="content">
+            <div class="contact-title-wrapper">
+                <h1>Contact</h1>
+                <h1 class="contact-title-bg">Contact</h1> <!-- Transparent title behind -->
+            </div>
+            <div class="contact-card">
+                <h2>Email</h2>
+                <p>pujari.ishank@gmail.com</p>
+            </div>
+            <div class="contact-card">
+                <h2>Phone</h2>
+                <p>+1 309 592 8999</p>
+            </div>
+        </div>
+        
+        <script>
+            const menu = document.getElementById('menu');
+            const hamburger = document.getElementById('hamburger');
+            const toggleSwitch = document.getElementById('modeToggle');
+    
+            function toggleMenu() {
+                menu.classList.toggle('visible');
+                menu.classList.toggle('hidden');
+            }
+    
+            hamburger.addEventListener('click', function() {
+                toggleMenu();
+            });
+    
+            toggleSwitch.addEventListener('change', function() {
+                document.body.classList.toggle('light-mode', toggleSwitch.checked);
+                menu.classList.toggle('light-mode', toggleSwitch.checked);
+            });
+    
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+    
+            function hideMenuOnLargeScreens() {
+                const screenWidth = window.innerWidth;
+                if (screenWidth > 768) {
+                    menu.classList.remove('hidden');
+                    menu.classList.add('visible');
+                } else {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('visible');
+                }
+            }
+    
+            window.addEventListener('resize', hideMenuOnLargeScreens);
+            hideMenuOnLargeScreens();
+            toggleSwitch = document.getElementById('modeToggle');
+
+            toggleSwitch.addEventListener('change', function() {
+                document.body.classList.toggle('light-mode', toggleSwitch.checked);
+            });
+        </script>
+    </body>
+    </html>
+    
